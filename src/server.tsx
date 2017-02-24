@@ -1,10 +1,7 @@
 // react
 import * as React from 'react'
 import * as ReactDOM from 'react-dom/server'
-
-// hapi
-import * as Hapi from 'hapi'
-import * as Inert from 'inert'
+import { Provider } from 'react-redux'
 
 // webpack
 import * as WebpackIsomorphicTools from 'webpack-isomorphic-tools'
@@ -14,35 +11,23 @@ import { isomorphicConfig } from '../webpack/isomorphic-tools'
 import { Html } from './containers/App/Html'
 import { App } from './containers/App/App'
 
+import { createStore } from './redux/createStore'
+import { getServer } from './server/core'
 
 const webpackIsomorphicTools = new WebpackIsomorphicTools(isomorphicConfig)
 
-webpackIsomorphicTools.server(`${__dirname}/..`, () => {
-  const reducers = (state, action) => {
-    switch (action.type) {
-      default:
-        return state
-    }
-  }
+webpackIsomorphicTools.server(`${__dirname}/..`, async () => {
 
-  const defaultAction = {
-    type: 'test',
-  }
+  const server = await getServer()
+  const store = createStore()
+  const rootComponent = (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  )
 
-  const preRenderedDOM = `<!doctype html>${ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} component={<App />} />)}`
-
-  const server = new Hapi.Server()
-  const host = 'localhost'
-  const port = 3000
-
-  server.connection({
-    host,
-    port,
-  })
-
-  server.register([
-    Inert,
-  ])
+  const preRenderedDOM = `<!doctype html>${ReactDOM.renderToString(
+    <Html assets={webpackIsomorphicTools.assets()} component={rootComponent} />)}`
 
   server.route({
     path: '/static/{p*}',
@@ -63,9 +48,10 @@ webpackIsomorphicTools.server(`${__dirname}/..`, () => {
       }
 
       reply(preRenderedDOM)
-    }
+    },
   })
 
   server.start()
-  console.log(`✅  server has started at ${host}:${port}.`)
+
+  console.log(`✅  server has started at ${server.info.uri}.`)
 });
