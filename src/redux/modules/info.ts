@@ -1,7 +1,7 @@
 const LOAD = 'info/LOAD'
 
 const initialState = {
-  stuff: null,
+  stuff: '',
 }
 
 export const reducer = (state = initialState, action) => {
@@ -9,7 +9,7 @@ export const reducer = (state = initialState, action) => {
     case LOAD:
       return {
         ...state,
-        stuff: 'test data 2',
+        stuff: 'test data',
       }
     default:
       return state

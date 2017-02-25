@@ -27,7 +27,7 @@ const serverOptions = {
   lazy: false,
   publicPath: webpackConfig.output.publicPath,
   headers: { 'Access-Control-Allow-Origin': '*' },
-  stats: { colors: true }
+  stats: { colors: true },
 }
 packager.app.webpackCompiler = compiler
 
@@ -52,4 +52,4 @@ packager.ext('onRequest', (request, reply) => {
 
 // start the packager on development 3001 port
 packager.start()
-console.log(`packager has started at ${host}:${port}.`)
+console.log(`🚧   webpack packager has started at ${host}:${port}.`)

@@ -6,6 +6,7 @@
   "author": "eseom <me@eseom.org>",
   "license": "MIT",
   "scripts": {
+    "lint": "tslint src/*",
     "start": "NODE_ENV=production node bin/server",
     "dev": "rm webpack-assets.json; NODE_ENV=development concurrently --kill-others \"yarn dev:packager\" \"yarn dev:server\"",
     "dev:packager": "node bin/packager",
@@ -13,7 +14,6 @@
     "build": "node -r ./require-ts node_modules/.bin/webpack --verbose --colors --display-error-details --config webpack/production.ts"
   },
   "dependencies": {
-    "concurrently": "^3.3.0",
     "gift": "^0.10.0",
     "hapi": "^16.1.0",
     "hapi-es7-async-handler": "^1.0.2",
@@ -23,6 +23,7 @@
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.3",
+    "react-router": "2.8.1",
     "redux": "^3.6.0",
     "sequelize": "^3.30.2",
     "sqlite3": "^3.1.8",
@@ -34,11 +35,10 @@
     "@types/node": "^7.0.5",
     "awesome-typescript-loader": "^3.0.4",
     "clean-webpack-plugin": "^0.1.15",
+    "concurrently": "^3.3.0",
     "piping": "^1.0.0-rc.4",
     "react-hot-loader": "3.0.0-beta.6",
-    "ts-node": "^2.1.0",
     "tslint": "^4.4.2",
-    "tslint-microsoft-contrib": "^4.0.0",
     "tslint-react": "^2.4.0",
     "typescript": "^2.1.6",
     "webpack": "^2.2.1",

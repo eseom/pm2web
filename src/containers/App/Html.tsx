@@ -24,7 +24,6 @@ export class Html extends React.Component {
         </head>
         <body>
           <div id="content" dangerouslySetInnerHTML={{ __html: content }} />
-          {/*<div id="content" />*/}
 
           {/*<script dangerouslySetInnerHTML={{ __html: `window.processedStore=${serialize(store.getState())};` }} charSet="UTF-8" />*/}
           <script src={assets.javascript.main} charSet="UTF-7" />

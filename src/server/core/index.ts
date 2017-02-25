@@ -15,7 +15,7 @@ server.connection({
     json: {
       space: 2,
     },
-  }
+  },
 })
 
 interface ICommand {
@@ -28,7 +28,7 @@ const models = {}
 const commands = {}
 const command: ICommand = {
   route: (mod: string, identifier: string, callback: () => {}) => {
-    if (typeof commands[mod] === 'undefined') commands[mod] = {}
+    if (typeof commands[mod] === 'undefined') { commands[mod] = {} }
     commands[mod][identifier] = callback
   },
   execute: (mod: string, identifier: string) => {
@@ -63,7 +63,7 @@ const modules = {
     modules.items.push(item)
   },
   install: () => {
-    modules.items.forEach(it => require(it))
+    modules.items.forEach((it) => require(it))
   },
 }
 
@@ -90,12 +90,12 @@ apps.forEach((app) => {
 })
 
 Object.keys(models).forEach((modelName) => {
-  if ('associate' in models[modelName]) models[modelName].associate(models)
+  if ('associate' in models[modelName]) { models[modelName].associate(models) }
 })
 
 const getServer = async () => {
   await new Promise((resolve, reject) => {
-    server.register([
+    const plugins = [
       require('inert'),
       require('vision'),
       require('hapi-swagger'),
@@ -105,14 +105,14 @@ const getServer = async () => {
         options: {
           storeBlank: false, cookieOptions: {
             password: 'the-password-must-be-at-least-32-characters-long',
-            isSecure: true
-          }
+            isSecure: true,
+          },
         },
-      }
-    ], (err) => {
-        if (err) reject(err)
-        resolve(true)
-      })
+      },
+    ]
+    server.register(plugins, (err) => (
+      err ? reject(err) : resolve(true)
+    ))
   })
 
   /* socket io */
@@ -146,7 +146,7 @@ const getServer = async () => {
   /* end socket io */
 
   modules.install()
-  handlers.forEach(handler => server.route(handler))
+  handlers.forEach((handler) => server.route(handler))
 
   return server
 }

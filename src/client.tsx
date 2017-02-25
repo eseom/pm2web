@@ -1,18 +1,19 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
+import { Router, browserHistory } from 'react-router'
 import { Provider } from 'react-redux'
 
-// app
 import { App } from './containers/App/App'
 
-import { createStore } from './redux/createStore'
+import { configureStore } from './redux/configureStore'
+import { getRoutes } from './routes'
 
 const dest = document.getElementById('content')
-const store = createStore()
+const store = configureStore()
 
 const RootComponent = () => (
   <Provider store={store}>
-    <App />
+    <Router routes={getRoutes(store)} history={browserHistory} />
   </Provider>
 )
 
@@ -25,7 +26,7 @@ if (process.env.NODE_ENV !== 'production') {
   if ((module as any).hot) {
     (module as any).hot.accept('./redux/reducers', () => {
       /* tslint:disable */
-      store.replaceReducer(require('./redux/reducers').reducers);
+      store.replaceReducer(require('./redux/reducers').reducers)
       /* tslint:enable */
     });
     (module as any).hot.accept(() => {
