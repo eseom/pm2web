@@ -9,7 +9,7 @@ export const reducer = (state = initialState, action) => {
     case LOAD:
       return {
         ...state,
-        stuff: 'test data',
+        stuff: 'test data2',
       }
     default:
       return state

@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Router, browserHistory } from 'react-router'
+import { syncHistoryWithStore } from 'react-router-redux'
 import { Provider } from 'react-redux'
 
 import { App } from './containers/App/App'
@@ -9,7 +10,8 @@ import { configureStore } from './redux/configureStore'
 import { getRoutes } from './routes'
 
 const dest = document.getElementById('content')
-const store = configureStore()
+const store = configureStore(browserHistory)
+const history = syncHistoryWithStore(browserHistory, store)
 
 const RootComponent = () => (
   <Provider store={store}>

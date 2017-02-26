@@ -1,7 +1,9 @@
 import * as React from 'react'
 import { renderToString } from 'react-dom/server'
 import { Provider } from 'react-redux'
+import * as createHistory from 'react-router/lib/createMemoryHistory'
 import { match, RouterContext } from 'react-router'
+import { syncHistoryWithStore } from 'react-router-redux'
 
 import * as WebpackIsomorphicTools from 'webpack-isomorphic-tools'
 import { isomorphicConfig } from '../webpack/isomorphic-tools'
@@ -36,7 +38,9 @@ webpackIsomorphicTools.server(`${__dirname}/..`, async () => {
         webpackIsomorphicTools.refresh()
       }
 
-      const store = configureStore()
+      const memoryHistory = createHistory(request.url.path)
+      const store = configureStore(memoryHistory)
+      const history = syncHistoryWithStore(memoryHistory, store)
 
       function hydrateOnClient() {
         return reply(`<!doctype html>${renderToString(
@@ -49,7 +53,7 @@ webpackIsomorphicTools.server(`${__dirname}/..`, async () => {
 
       const routes = getRoutes(store)
 
-      match({ routes, location: request.url.path }, (error, redirectLocation, renderProps) => {
+      match({ history, routes, location: request.url.path }, (error, redirectLocation, renderProps) => {
         if (error) {
           console.error('ROUTER ERROR:', error)
           hydrateOnClient().code(500)
