@@ -2,20 +2,30 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Router, browserHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
+import { ReduxAsyncConnect } from 'redux-connect'
 import { Provider } from 'react-redux'
 
 import { App } from './containers/App/App'
 
 import { configureStore } from './redux/configureStore'
 import { getRoutes } from './routes'
+import { ApiClient } from './helpers/ApiClient'
 
 const dest = document.getElementById('content')
-const store = configureStore(browserHistory)
+const client = new ApiClient()
+const store = configureStore(browserHistory, client)
 const history = syncHistoryWithStore(browserHistory, store)
 
-const RootComponent = () => (
+const connectedCmp = (props) => <ReduxAsyncConnect {...props} />
+
+const RootComponent = (renderProps) => (
   <Provider store={store}>
-    <Router routes={getRoutes(store)} history={browserHistory} />
+    <Router
+      render={connectedCmp}
+      routes={getRoutes(store)}
+      history={history}
+      {...renderProps}
+    />
   </Provider>
 )
 

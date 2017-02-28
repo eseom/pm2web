@@ -1,6 +1,6 @@
 require('../require-ts.js')
 
-global.EXEC_ENV = 'server'
+process.env.EXEC_ENV = 'server'
 
 if (process.env.NODE_ENV !== 'production') {
   // watch files when development mode

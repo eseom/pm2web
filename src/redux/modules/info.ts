@@ -1,6 +1,9 @@
 const LOAD = 'info/LOAD'
+const LOAD_SUCCESS = 'info/LOAD_SUCCESS'
+const LOAD_FAIL = 'info/LOAD_FAIL'
 
 const initialState = {
+  loaded: false,
   stuff: '',
 }
 
@@ -9,14 +12,39 @@ export const reducer = (state = initialState, action) => {
     case LOAD:
       return {
         ...state,
-        stuff: 'test data2',
+        loading: true,
+      }
+    case LOAD_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        loaded: true,
+        data: action.result,
+      }
+    case LOAD_FAIL:
+      return {
+        ...state,
+        loading: false,
+        loaded: false,
+        error: action.error,
       }
     default:
       return state
   }
 }
 
-export const load = () => {
+export function isLoaded(globalState) {
+  return globalState.info && globalState.info.loaded
+}
+
+export function load() {
+  return {
+    types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
+    promise: (client) => client.get('/api/loadInfo'),
+  }
+}
+
+export const loadOne = () => {
   return {
     type: LOAD,
   }

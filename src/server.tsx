@@ -2,6 +2,7 @@ import * as React from 'react'
 import { renderToString } from 'react-dom/server'
 import { Provider } from 'react-redux'
 import * as createHistory from 'react-router/lib/createMemoryHistory'
+import { ReduxAsyncConnect, loadOnServer } from 'redux-connect'
 import { match, RouterContext } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 
@@ -13,6 +14,7 @@ import { Html } from './containers/App/Html'
 import { configureStore } from './redux/configureStore'
 import { getRoutes } from './routes'
 import { getServer } from './server/core'
+import {ApiClient} from './helpers/ApiClient'
 
 const webpackIsomorphicTools = new WebpackIsomorphicTools(isomorphicConfig)
 
@@ -39,7 +41,8 @@ webpackIsomorphicTools.server(`${__dirname}/..`, async () => {
       }
 
       const memoryHistory = createHistory(request.url.path)
-      const store = configureStore(memoryHistory)
+      const client = new ApiClient(request)
+      const store = configureStore(memoryHistory, client)
       const history = syncHistoryWithStore(memoryHistory, store)
 
       function hydrateOnClient() {
@@ -60,18 +63,23 @@ webpackIsomorphicTools.server(`${__dirname}/..`, async () => {
         } else if (redirectLocation) {
           reply.redirect(redirectLocation.pathname + redirectLocation.search)
         } else if (renderProps) {
-          const component = (
-            <Provider store={store}>
-              <RouterContext {...renderProps} />
-            </Provider>
-          )
-          reply(`<!doctype html>${renderToString(
-            <Html
-              assets={webpackIsomorphicTools.assets()}
-              component={component}
-              store={store}
-            />,
-          )}`)
+          loadOnServer({ ...renderProps, store }).then(() => {
+            try {
+              const component = (
+                <Provider store={store}>
+                  <ReduxAsyncConnect {...renderProps} />
+                  {/*<RouterContext {...renderProps} />*/}
+                </Provider>
+              )
+              reply(`<!doctype html>${renderToString(
+                <Html
+                  assets={webpackIsomorphicTools.assets()}
+                  component={component}
+                  store={store}
+                />,
+              )}`)
+            } catch (e) { console.error(e, e.stack) }
+          })
         } else {
           reply('Not Found').code(404)
         }

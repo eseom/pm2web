@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom/server'
-// import * as serialize from 'serialize-javascript'
+import * as serialize from 'serialize-javascript'
 
 export class Html extends React.Component {
 
@@ -11,10 +11,13 @@ export class Html extends React.Component {
       },
     },
     component: Object,
+    store: {
+      getState: Function,
+    },
   }
 
   public render() {
-    const { assets, component } = this.props
+    const { assets, component, store } = this.props
     const content = ReactDOM.renderToString(component)
 
     return (
@@ -25,8 +28,8 @@ export class Html extends React.Component {
         <body>
           <div id="content" dangerouslySetInnerHTML={{ __html: content }} />
 
-          {/*<script dangerouslySetInnerHTML={{ __html: `window.processedStore=${serialize(store.getState())};` }} charSet="UTF-8" />*/}
-          <script src={assets.javascript.main} charSet="UTF-7" />
+          <script dangerouslySetInnerHTML={{ __html: `window.processedStore=${serialize(store.getState())};` }} charSet="UTF-8" />
+          <script src={assets.javascript.main} />
         </body>
 
       </html>

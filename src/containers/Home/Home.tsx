@@ -1,10 +1,11 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
+import { asyncConnect } from 'redux-connect'
 
 import { load as loadInfo } from '../../redux/modules/info'
 
 @connect(
-  (store) => ({ info: store.info.stuff }),
+  (store) => ({ info: store.info }),
   (dispatch) => ({ dispatch }),
 )
 export class Home extends React.Component {
@@ -12,7 +13,7 @@ export class Home extends React.Component {
   render() {
     return (
       <div>
-        <span>simple component. fetched data from store: {this.props.info}</span>
+        <span>simple component. fetched data from store:</span>
         <hr />
         <button onClick={this.getInfo}>fetch data</button>
       </div>
