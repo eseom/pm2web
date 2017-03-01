@@ -35,6 +35,7 @@
       "always-prefix"
     ],
     "jsdoc-format": true,
+    "jsx-no-multiline-js": false,
     "label-position": true,
     "max-line-length": [
       true,

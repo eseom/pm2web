@@ -13,6 +13,6 @@ export const webpackBaseConfig = {
     ],
   },
   resolve: {
-    extensions: ['.json', '.js', '.jsx', '.ts', '.tsx'],
+    extensions: ['.json', '.js', '.jsx', '.ts', '.tsx', 'css', 'scss'],
   },
 }

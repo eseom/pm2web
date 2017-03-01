@@ -13,7 +13,7 @@ import { ApiClient } from './helpers/ApiClient'
 
 const dest = document.getElementById('content')
 const client = new ApiClient()
-const store = configureStore(browserHistory, client)
+const store = configureStore(browserHistory, client, window.processedStore)
 const history = syncHistoryWithStore(browserHistory, store)
 
 const connectedCmp = (props) => <ReduxAsyncConnect {...props} />

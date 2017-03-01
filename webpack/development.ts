@@ -1,4 +1,4 @@
-import { resolve } from 'dns';
+import { resolve } from 'dns'
 import * as webpack from 'webpack'
 import { TsConfigPathsPlugin } from 'awesome-typescript-loader'
 
@@ -38,4 +38,33 @@ export const webpackConfig = {
       },
     }),
   ],
+  module: {
+    rules: [
+      ...webpackBaseConfig.module.rules,
+      {
+        test: /\.scss$/,
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 2,
+              modules: true,
+              localIdentName: '[name]__[local]',
+            },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              outputStyle: 'expanded',
+              sourceMap: true,
+              sourceMapContents: true,
+            },
+          },
+        ],
+      },
+    ],
+  },
 }

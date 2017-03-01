@@ -4,7 +4,6 @@ const LOAD_FAIL = 'info/LOAD_FAIL'
 
 const initialState = {
   loaded: false,
-  stuff: '',
 }
 
 export const reducer = (state = initialState, action) => {
@@ -20,6 +19,7 @@ export const reducer = (state = initialState, action) => {
         loading: false,
         loaded: true,
         data: action.result,
+        stuff: action.stuff,
       }
     case LOAD_FAIL:
       return {
@@ -41,6 +41,7 @@ export function load() {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
     promise: (client) => client.get('/api/loadInfo'),
+    stuff: 'stuff',
   }
 }
 
