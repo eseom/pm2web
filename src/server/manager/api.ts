@@ -94,7 +94,7 @@ nestedRoute.get('/sync_and_restart/{name}', async (request, reply) => {
   const proc: Array<IPm2Process> = list.filter((it) => {
     return it.name === request.params.name
   })
-  git.init(proc[0].pm2_env.versioning.repo_path, (err, repo) => {
+  git.init(proc[0].pm2_env.pm2_cwd, (err, repo) => {
     repo.sync((syncResult) => {
       pm2.restart(request.params.name, (err, proc) => {
         if (err) { throw err }
