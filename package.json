@@ -18,7 +18,7 @@
     "css-loader": "^0.26.2",
     "gift": "^0.10.0",
     "hapi": "^16.1.0",
-    "hapi-es7-async-handler": "^1.0.5",
+    "hapi-es7-async-handler": "^1.0.6",
     "hapi-swagger": "^7.7.0",
     "inert": "^4.1.0",
     "node-sass": "^4.5.0",
