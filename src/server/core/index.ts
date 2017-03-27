@@ -5,11 +5,9 @@ import * as Sequelize from 'sequelize'
 import settings from './settings'
 
 const server = new Hapi.Server()
-const host = 'localhost'
 const port = 3000
 
 server.connection({
-  host,
   port,
   routes: {
     json: {
@@ -99,7 +97,12 @@ const getServer = async () => {
       require('inert'),
       require('vision'),
       require('hapi-swagger'),
-      require('hapi-es7-async-handler'),
+      {
+        register: require('hapi-es7-async-handler'),
+        options: {
+          server,
+        },
+      },
       {
         register: require('yar'),
         options: {

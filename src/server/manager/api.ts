@@ -9,6 +9,7 @@ const nestedRoute = route.nested('/api/manager')
 interface IPm2Process {
   name: string
   pm2_env: {
+    pm2_cwd: string
     versioning: {
       repo_path: string
     }
